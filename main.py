@@ -31,24 +31,27 @@ df_users = sqlio.read_sql_query(df_users_query, conn)
 st.title('LucIAna Admin')
 
 dropdown_userselected = st.selectbox('User Selected', df_users['_id_user'].unique())
-# dropdown_typeuser = st.selectbox('Type User', ['admin', 'user'])
+dropdown_typeuser = st.selectbox('Type User', ['admin', 'user'])
 dropdown_featuresavailable = st.selectbox('Features Available', ['all', 'few'])
 
 if st.button('Submit'):
     st.write(f'dropdown_userselected: {dropdown_userselected}')
-    # st.write(f'dropdown_typeuser: {dropdown_typeuser}')
+    st.write(f'dropdown_typeuser: {dropdown_typeuser}')
     st.write(f'dropdown_featuresavailable: {dropdown_featuresavailable}')
 
-    # Write the update query
-    sql_update_query = """UPDATE public.gpt_users
+    # Update Features
+    sql_update_featuresavailable_query = """UPDATE public.gpt_users
                         SET features_available = %s
                         WHERE _id_user = %s"""
-
-    # Tuple of values to update (new salary, employee id)
     values_to_update = (dropdown_featuresavailable, int(dropdown_userselected))
+    cur.execute(sql_update_featuresavailable_query, values_to_update)
 
-    # Execute the query
-    cur.execute(sql_update_query, values_to_update)
+    # Update Type User
+    sql_update_typeuser_query = """UPDATE public.gpt_users
+                        SET type = %s
+                        WHERE _id_user = %s"""
+    values_to_update = (dropdown_typeuser, int(dropdown_userselected))
+    cur.execute(sql_update_typeuser_query, values_to_update)
 
     # Commit the changes to the database
     conn.commit()
