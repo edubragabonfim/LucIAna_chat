@@ -17,24 +17,32 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 df_users_query = '''
-select
-    *
-    , concat("_id_user", ' - ', initcap("name")) as id_user_and_name
-    , concat(phone , ' - ', initcap("name")) as phone_user_and_name  
-from public.gpt_users gu 
-order by "_id_user" 
-'''
+    select
+        *
+        , concat("_id_user", ' - ', initcap("name")) as id_user_and_name
+        , concat(phone , ' - ', initcap("name")) as phone_user_and_name  
+    from public.gpt_users gu 
+    order by "_id_user" 
+    '''
 df_users = sqlio.read_sql_query(df_users_query, conn)
 
 
 # Here is the start of the site
 st.title('LucIAna Admin')
 
+st.header('Users', divider='blue')
+if st.button('Render Users', key='render_users'):
+    st.dataframe(df_users, hide_index=True)
+
+st.divider()
+
+st.header('Set Configs', divider='blue')
+
 dropdown_userselected = st.selectbox('User Selected', df_users['_id_user'].unique())
 dropdown_typeuser = st.selectbox('Type User', ['admin', 'user'])
 dropdown_featuresavailable = st.selectbox('Features Available', ['all', 'few'])
 
-if st.button('Submit'):
+if st.button('Submit', key='submit_changes'):
     st.write(f'dropdown_userselected: {dropdown_userselected}')
     st.write(f'dropdown_typeuser: {dropdown_typeuser}')
     st.write(f'dropdown_featuresavailable: {dropdown_featuresavailable}')
@@ -59,3 +67,5 @@ if st.button('Submit'):
     df_users = sqlio.read_sql_query(df_users_query, conn)
 
     st.dataframe(df_users.query(f'_id_user == {dropdown_userselected}'), hide_index=True)
+
+st.info(st.session_state)
