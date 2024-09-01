@@ -1,13 +1,10 @@
 import streamlit as st
-import streamlit_authenticator as stauth
 import pandas as pd
 import pandas.io.sql as sqlio
 import psycopg2
 import os
 from dotenv import load_dotenv
 load_dotenv()
-
-
 
 conn = psycopg2.connect(
     user=os.getenv('PG_USER'),
