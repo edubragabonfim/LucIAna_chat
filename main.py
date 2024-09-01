@@ -1,11 +1,13 @@
 import streamlit as st
+import streamlit_authenticator as stauth
 import pandas as pd
 import pandas.io.sql as sqlio
 import psycopg2
 import os
 from dotenv import load_dotenv
-
 load_dotenv()
+
+
 
 conn = psycopg2.connect(
     user=os.getenv('PG_USER'),
@@ -18,19 +20,29 @@ cur = conn.cursor()
 
 df_users_query = '''
     select
-        *
-        , concat("_id_user", ' - ', initcap("name")) as id_user_and_name
-        , concat(phone , ' - ', initcap("name")) as phone_user_and_name  
-    from public.gpt_users gu 
-    order by "_id_user" 
+        gu."_id_user" 
+        , gu.date_created 
+        , gu."name" 
+        , gu.phone 
+        , gu."type" 
+        , gu.features_available 
+        , concat(gu."_id_user", ' - ', initcap(gu."name")) as id_user_and_name
+        , concat(gu.phone , ' - ', initcap(gu."name")) as phone_user_and_name  
+        , max(gm.date_time) as last_interaction 
+    from public.gpt_users gu
+    left join public.gpt_messages gm on gm."_id_user"::int = gu."_id_user"::int
+    group by 1,2,3,4,5,6,7,8
+    order by gu."_id_user" desc
     '''
 df_users = sqlio.read_sql_query(df_users_query, conn)
 
 
 # Here is the start of the site
-st.title('LucIAna Admin')
+st.header('LucIAna Admin 🧠⚙', divider='blue')
 
-st.header('Teste com os meus meninos')
+col1, col2 = st.columns(2)
+col1.metric("Users", df_users.shape[0])
+col2.metric("Last User Created", df_users['name'].head(1).unique()[0])
 
 st.header('Users', divider='blue')
 if st.button('Render Users', key='render_users'):
@@ -71,3 +83,4 @@ if st.button('Submit', key='submit_changes'):
     st.dataframe(df_users.query(f'_id_user == {dropdown_userselected}'), hide_index=True)
 
 st.info(st.session_state)
+
