@@ -2,3 +2,4 @@ pandas==2.1.2
 streamlit==1.28.0
 python-dotenv==1.0.1
 psycopg2-binary==2.9.9
+streamlit-auth0-component==0.1.5
