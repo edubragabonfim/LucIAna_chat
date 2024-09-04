@@ -7,6 +7,13 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+st.set_page_config(
+    'Admin LucIAna',
+    '🦅',
+    layout='wide',
+    initial_sidebar_state='collapsed'
+)
+
 conn = psycopg2.connect(
     user=os.getenv('PG_USER'),
     password=os.getenv('PG_PWD'),
@@ -48,12 +55,6 @@ df_models_query = '''
     '''
 df_models = sqlio.read_sql_query(df_models_query, conn)
 
-st.set_page_config(
-    'Admin LucIAna',
-    '🦅',
-    layout='wide',
-    initial_sidebar_state='collapsed'
-)
 
 # Here is the start of the site
 # First, we create the sidebar

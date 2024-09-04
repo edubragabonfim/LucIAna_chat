@@ -11,11 +11,11 @@ st.set_page_config(
     initial_sidebar_state='expanded'
 )
 
-user_info = login_button(os.environ.get('CLIENT_ID'), os.environ.get('DOMAIN'))
-st.write(user_info)
+# user_info = login_button(os.environ.get('CLIENT_ID'), os.environ.get('DOMAIN'))
+# st.write(user_info)
 
 # Here is the start of the site
 # First, we create the sidebar
-# st.sidebar.write('This is a experiment')
-# st.header('LucIAna Portal 🧠', divider='blue')
-# st.image('LucIAnaChat\static\LucIAna photo.jpg')
+st.sidebar.write('This is a experiment')
+st.header('LucIAna Portal 🧠', divider='blue')
+st.image('LucIAnaChat\static\LucIAna photo.jpg')
