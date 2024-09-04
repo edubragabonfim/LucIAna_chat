@@ -44,13 +44,14 @@ df_models_query = '''
         lm."_id_model" 
         , lm.model_name 
     from public.llm_models lm
+    where able = 'Yes'
     '''
 df_models = sqlio.read_sql_query(df_models_query, conn)
 
 st.set_page_config(
     'Admin LucIAna',
     '🦅',
-    layout='centered',
+    layout='wide',
     initial_sidebar_state='collapsed'
 )
 
