@@ -42,8 +42,7 @@ st.set_page_config(
 
 # Here is the start of the site
 # First, we create the sidebar
-st.sidebar.write('Sup')
-
+st.sidebar.write('This is a experiment')
 st.header('LucIAna Admin 🧠⚙', divider='blue')
 
 # Indicadores
@@ -83,26 +82,44 @@ if toggle_featuresavailable_option:
 
 # Se o botão for pressionado, faça...
 if st.button('Submit', key='submit_changes'):
-    # Update Features
-    sql_update_featuresavailable_query = """UPDATE public.gpt_users
+    toggle_list = [
+        toggle_typeuser_option,
+        toggle_featuresavailable_option
+    ]
+    if toggle_list[0] == True and  toggle_list[1] == True:
+        # Update Type User
+        sql_update_typeuser_query = """UPDATE public.gpt_users
+                            SET type = %s
+                            WHERE _id_user = %s"""
+        values_to_update = (st.session_state.typeuser, int(dropdown_userselected))
+        cur.execute(sql_update_typeuser_query, values_to_update)
+
+        # Update Features
+        sql_update_featuresavailable_query ="""UPDATE public.gpt_users
                         SET features_available = %s
                         WHERE _id_user = %s"""
-    values_to_update = (dropdown_featuresavailable, int(dropdown_userselected))
-    cur.execute(sql_update_featuresavailable_query, values_to_update)
-
-    # Update Type User
-    sql_update_typeuser_query = """UPDATE public.gpt_users
-                        SET type = %s
+        values_to_update = (st.session_state.featuresavailable, int(dropdown_userselected))
+        cur.execute(sql_update_featuresavailable_query, values_to_update)
+    elif toggle_list[0] == True and toggle_list[1] == False:
+        sql_update_typeuser_query = """UPDATE public.gpt_users
+                            SET type = %s
+                            WHERE _id_user = %s"""
+        values_to_update = (st.session_state.typeuser, int(dropdown_userselected))
+        cur.execute(sql_update_typeuser_query, values_to_update)
+    elif toggle_list[0] == False and toggle_list[1] == True:
+        # Update Features
+        sql_update_featuresavailable_query ="""UPDATE public.gpt_users
+                        SET features_available = %s
                         WHERE _id_user = %s"""
-    values_to_update = (dropdown_typeuser, int(dropdown_userselected))
-    cur.execute(sql_update_typeuser_query, values_to_update)
-
-    # Commit the changes to the database
-    conn.commit()
-
-    # Exibe a linha do usuário alterado, no banco
+        values_to_update = (st.session_state.featuresavailable, int(dropdown_userselected))
+        cur.execute(sql_update_featuresavailable_query, values_to_update)
+    else:
+        pass
+    
     df_users = sqlio.read_sql_query(df_users_query, conn)
     st.dataframe(df_users.query(f'_id_user == {dropdown_userselected}'), hide_index=True)
 
+    # Commit the changes to the database
+    conn.commit()
 
 st.sidebar.json(st.session_state, expanded=True)
