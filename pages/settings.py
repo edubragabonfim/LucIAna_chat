@@ -109,23 +109,24 @@ if st.button('Submit', key='submit_changes'):
         toggle_model_option
     ]
 
-    if toggle_list[0]:
+    if toggle_list[0]: # Type User
         sql_update_typeuser_query = """UPDATE public.gpt_users
                             SET type = %s
                             WHERE _id_user = %s"""
         values_to_update = (st.session_state.typeuser, int(dropdown_userselected))
         cur.execute(sql_update_typeuser_query, values_to_update)
 
-    if toggle_list[1]:
+    if toggle_list[1]: # Features Available
         sql_update_typeuser_query = """UPDATE public.gpt_users
                             SET features_available = %s
                             WHERE _id_user = %s"""
-        values_to_update = (st.session_state.typeuser, int(dropdown_userselected))
+        values_to_update = (st.session_state.featuresavailable, int(dropdown_userselected))
         cur.execute(sql_update_typeuser_query, values_to_update)
 
-    if toggle_list[2]:
-        # 
-        sql_update_typeuser_query = """UPDATE public.gpt_users SET _id_current_model = %s WHERE _id_user = %s"""
+    if toggle_list[2]: # Current Model
+        sql_update_typeuser_query = """UPDATE public.gpt_users 
+                            SET _id_current_model = %s 
+                            WHERE _id_user = %s"""
         values_to_update = (str(st.session_state._id_model), int(dropdown_userselected))
         cur.execute(sql_update_typeuser_query, values_to_update)
     
