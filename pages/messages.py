@@ -34,6 +34,6 @@ if st.button('Query Messages'):
     df_messages = sqlio.read_sql_query(df_messages_query, conn)
 
     col1, col2 = st.columns(2)
-    col1.metric("Users", df_messages.shape[0])
+    col1.metric("Messages", df_messages.shape[0])
 
     st.dataframe(df_messages, hide_index=True)
