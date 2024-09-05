@@ -69,8 +69,8 @@ if authentication_status:
         # Page("C:\Code\Python\Dashbirds\dashbirds_v3\LucIAnaChat\\views\models.py", "Models", ":books:"),
 
         Page("main.py", "Main", ":books:"),
-        Page("views\settings.py", "Settings", ":books:"),
-        Page("views\dashboard.py", "Dashboard", ":books:"),
-        Page("views\messages.py", "Messages", ":books:"),
-        Page("views\models.py", "Models", ":books:"),
+        Page("views/settings.py", "Settings", ":books:"),
+        Page("views/dashboard.py", "Dashboard", ":books:"),
+        Page("views/messages.py", "Messages", ":books:"),
+        Page("views/models.py", "Models", ":books:"),
     ])
