@@ -9,6 +9,10 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
+show_pages([
+    Page("main.py", "Main", ":books:"),
+])
+
 st.set_page_config(
     'Admin LucIAna',
     '🦅',
