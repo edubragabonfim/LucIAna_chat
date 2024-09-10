@@ -64,8 +64,8 @@ st.header('LucIAna Admin 🧠⚙', divider='blue')
 # Indicadores
 col1, col2 = st.columns(2)
 col1.metric("Users", df_users.shape[0])
-col2.metric("Last User Created", df_users['name'].head(1).unique()[0])
-st.dataframe(df_users.head(3), hide_index=True)  # Exibe os últimos 3 usuários que entraram
+col2.metric("Last User Created", (df_users.sort_values('_id_user', ascending=False)).name.head(1).unique()[0])
+st.dataframe((df_users.sort_values('_id_user', ascending=False)).head(3), hide_index=True)  # Exibe os últimos 3 usuários que entraram
 
 st.header('Users', divider='blue')
 if st.button('Render Users', key='render_users'):
@@ -88,6 +88,7 @@ col1, col2 = st.columns(2)
 toggle_typeuser_option = col1.toggle("Type User")
 toggle_featuresavailable_option = col1.toggle("Features Available")
 toggle_model_option = col1.toggle("Model Name")
+toggle_notifications_option = col1.toggle('Notifications')
 
 # DropDowns
 if toggle_typeuser_option:
@@ -100,13 +101,17 @@ if toggle_model_option:
     dropdown_model = col2.selectbox('Model Name', df_models['model_name'].unique())
     st.session_state.model = dropdown_model
     st.session_state._id_model = df_models.query(f"model_name == '{dropdown_model}'")._id_model.values[0]
+if toggle_notifications_option:
+    dropdown_notifications = col2.selectbox('Notifications', ['0', '1'])
+    st.session_state.notifications = dropdown_notifications
 
 # Se o botão for pressionado, faça...
 if st.button('Submit', key='submit_changes'):
     toggle_list = [
         toggle_typeuser_option,
         toggle_featuresavailable_option,
-        toggle_model_option
+        toggle_model_option,
+        toggle_notifications_option
     ]
 
     if toggle_list[0]: # Type User
@@ -129,6 +134,13 @@ if st.button('Submit', key='submit_changes'):
                             WHERE _id_user = %s"""
         values_to_update = (str(st.session_state._id_model), int(dropdown_userselected))
         cur.execute(sql_update_typeuser_query, values_to_update)
+
+    if toggle_list[3]: # Notifications
+        sql_update_notifications_query = """UPDATE public.gpt_users 
+                            SET notifications = %s 
+                            WHERE _id_user = %s"""
+        values_to_update = (str(st.session_state.notifications), int(dropdown_userselected))
+        cur.execute(sql_update_notifications_query, values_to_update)
     
     df_users = sqlio.read_sql_query(df_users_query, conn)
     st.dataframe(df_users.query(f'_id_user == {dropdown_userselected}'), hide_index=True)

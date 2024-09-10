@@ -22,8 +22,10 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-if st.button('Query Messages'):
-    df_messages_query = '''
+
+@st.cache_data
+def load_data():
+    query = '''
         select
             *
             , length(prompt) as prompt_length
@@ -31,9 +33,12 @@ if st.button('Query Messages'):
         from public.gpt_messages gm 
         order by gm."_id_message" desc
         '''
-    df_messages = sqlio.read_sql_query(df_messages_query, conn)
+    df = sqlio.read_sql_query(query, conn)
+    return df
 
+
+if st.button('Query Messages'):
+    df_messages = load_data()
     col1, col2 = st.columns(2)
     col1.metric("Messages", df_messages.shape[0])
-
     st.dataframe(df_messages, hide_index=True)
