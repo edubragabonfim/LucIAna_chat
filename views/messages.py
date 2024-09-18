@@ -6,13 +6,6 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-st.set_page_config(
-    'Admin LucIAna',
-    '🦅',
-    layout='wide',
-    initial_sidebar_state='collapsed'
-)
-
 conn = psycopg2.connect(
     user=os.getenv('PG_USER'),
     password=os.getenv('PG_PWD'),
@@ -23,7 +16,7 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 
-@st.cache_data
+# @st.cache_data
 def load_data():
     query = '''
         select

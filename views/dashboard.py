@@ -1,12 +1,5 @@
 import streamlit as st
 
-st.set_page_config(
-    'Admin LucIAna',
-    '🦅',
-    layout='wide',
-    initial_sidebar_state='collapsed'
-)
-
 # Here is the start of the site
 # First, we create the sidebar
 st.sidebar.write('This is a experiment')

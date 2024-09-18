@@ -1,0 +1,29 @@
+[[pages]]
+path = "login.py"
+name = "Login"
+icon = "💠"
+
+[[pages]]
+path = "views/main.py"
+name = "Main"
+icon = "🕌"
+
+[[pages]]
+path = "views/settings.py"
+name = "Settings"
+icon = "⚙️"
+
+[[pages]]
+path = "views/dashboard.py"
+name = "Dashboard"
+icon = "📊"
+
+[[pages]]
+path = "views/messages.py"
+name = "Messages"
+icon = "💬"
+
+[[pages]]
+path = "views/models.py"
+name = "Models"
+icon = "🧠"

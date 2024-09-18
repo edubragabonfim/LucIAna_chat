@@ -7,131 +7,116 @@ import time
 import psycopg2
 import pandas as pd
 import streamlit as st
-from st_pages import Page, show_pages
+from st_pages import add_page_title, get_nav_from_toml
 import streamlit_authenticator as stauth
 from streamlit_extras.switch_page_button import switch_page
 from streamlit_javascript import st_javascript
 from dotenv import load_dotenv
 load_dotenv()
 
-st.set_page_config(
-    'Admin LucIAna',
-    '🦅',
-    layout='centered',
-    initial_sidebar_state='expanded'
-)
+nav = get_nav_from_toml(".streamlit/pages.toml")
 
-show_pages([
-    # Page("C:\Code\Python\Dashbirds\dashbirds_v3\LucIAnaChat\main.py", "Main", ":books:"),
-    # Page(f"{Path(__file__).parent / 'main.py'}", "Main", ":books:"),
-    # Page("C:\Code\Python\Dashbirds\dashbirds_v3\LucIAnaChat\\views\settings.py", "Settings", ":books:"),
-    # # Page("C:\Code\Python\Dashbirds\dashbirds_v3\LucIAnaChat\\views\dashboard.py", "Dashboard", ":books:"),
-    # # Page("C:\Code\Python\Dashbirds\dashbirds_v3\LucIAnaChat\\views\messages.py", "Messages", ":books:"),
-    # # Page("C:\Code\Python\Dashbirds\dashbirds_v3\LucIAnaChat\\views\models.py", "Models", ":books:"),
-    Page("views/main.py", "Main", "🕌"),
-    Page("views/settings.py", "Settings", "⚙️"),
-    Page("views/dashboard.py", "Dashboard", "📊"),
-    Page("views/messages.py", "Messages", "💬"),
-    Page("views/models.py", "Models", "🧠"),
-])
+pg = st.navigation(nav)
 
-## ---- USER  AUTHENTICATION ----
-h = hashlib.new("SHA256")
+pg.run()
 
-conn = psycopg2.connect(
-    user=os.getenv('PG_USER'),
-    password=os.getenv('PG_PWD'),
-    host=os.getenv('PG_HOST'),
-    port=os.getenv('PG_PORT'),
-)
+# ## ---- USER  AUTHENTICATION ----
+# h = hashlib.new("SHA256")
 
-# Função para conectar banco de dados
-def run_query(query, is_select=True):
-    with conn.cursor() as cur:
-        cur.execute(query)
-        if is_select:
-            return cur.fetchall()
-        conn.commit()  # Essencial para comandos que alteram o banco de dados
+# conn = psycopg2.connect(
+#     user=os.getenv('PG_USER'),
+#     password=os.getenv('PG_PWD'),
+#     host=os.getenv('PG_HOST'),
+#     port=os.getenv('PG_PORT'),
+# )
 
-# Função para login, realizar busca no banco de dados gpt_users
-def fetch_user_data(input_username, password):
-    query = f"SELECT * FROM gpt_users WHERE username='{input_username}' AND password='{password}'"
-    rows = run_query(query)
+# # Função para conectar banco de dados
+# def run_query(query, is_select=True):
+#     with conn.cursor() as cur:
+#         cur.execute(query)
+#         if is_select:
+#             return cur.fetchall()
+#         conn.commit()  # Essencial para comandos que alteram o banco de dados
 
-    data = pd.DataFrame(
-        rows, columns=['_id_user', 'date_created', 'name', 'username', 'password', 'type'])
-    return data
+# # Função para login, realizar busca no banco de dados gpt_users
+# def fetch_user_data(input_username, password):
+#     query = f"SELECT * FROM gpt_users WHERE username='{input_username}' AND password='{password}'"
+#     rows = run_query(query)
 
-# Titulo e Subtitulo
-st.markdown(f"""
-    <div class="img-container">
-    <h1 class="title">Boas vindas ao Dashbirds Hub 🦅</h1>
-    <p class="subtitle">Faça login abaixo para acessar. </p>
-    </div>
-""", unsafe_allow_html=True)
+#     data = pd.DataFrame(
+#         rows, columns=['_id_user', 'date_created', 'name', 'username', 'password', 'type'])
+#     return data
 
-with st.form(key='login'):
-    input_username = str(st.text_input(
-        label='Usuário', placeholder='Digite o seu usuário'))
-    input_senha = str(st.text_input(
-        label='Senha', type='password', placeholder='Digite a sua senha'))
-    btn_entrar = st.form_submit_button(label='Entrar')
+# # Titulo e Subtitulo
+# st.markdown(f"""
+#     <div class="img-container">
+#     <h1 class="title">Boas vindas ao Dashbirds Hub 🦅</h1>
+#     <p class="subtitle">Faça login abaixo para acessar. </p>
+#     </div>
+# """, unsafe_allow_html=True)
 
-# Se clicar no botão de entrar
-if btn_entrar:
+# with st.form(key='login'):
+#     input_username = str(st.text_input(
+#         label='Usuário', placeholder='Digite o seu usuário'))
+#     input_senha = str(st.text_input(
+#         label='Senha', type='password', placeholder='Digite a sua senha'))
+#     btn_entrar = st.form_submit_button(label='Entrar')
 
-    try:
-        # h.update(input_senha.encode())
-        # pass_hash = h.hexdigest()
-        pass_hash = input_senha
+# # Se clicar no botão de entrar
+# if btn_entrar:
 
-        query = f"SELECT * FROM gpt_users WHERE email='{input_username.lower()}' AND pass='{pass_hash}'"
-        rows = run_query(query)
+#     try:
+#         # h.update(input_senha.encode())
+#         # pass_hash = h.hexdigest()
+#         pass_hash = input_senha
 
-        # Certifique-se de que os nomes das colunas correspondam à sua tabela de banco de dados
-        data = pd.DataFrame(
-            rows, columns=['_id_user', 'date_created', 'name', 'email', 'pass', 'type'])
-        count = len(data)
-    except:
-        st.error('Login ou Senha inválido. Tente novamente ou recupere a sua senha.')
+#         query = f"SELECT * FROM gpt_users WHERE email='{input_username.lower()}' AND pass='{pass_hash}'"
+#         rows = run_query(query)
 
-    if count == 1:
-        # Obter dados do usuário do DataFrame
-        id_user = data.iloc[0]['_id_user']
-        type_user = data.iloc[0]['type']
-        name_user = data.iloc[0]['name']
-        email_user = data.iloc[0]['email']
+#         # Certifique-se de que os nomes das colunas correspondam à sua tabela de banco de dados
+#         data = pd.DataFrame(
+#             rows, columns=['_id_user', 'date_created', 'name', 'email', 'pass', 'type'])
+#         count = len(data)
+#     except:
+#         st.error('Login ou Senha inválido. Tente novamente ou recupere a sua senha.')
 
-        # Salvar Variáveis no Armazenamento Local via JavaScript
-        js_id_user = st_javascript(
-            f"localStorage.setItem('userId', '{id_user}');")
+#     if count == 1:
+#         # Obter dados do usuário do DataFrame
+#         id_user = data.iloc[0]['_id_user']
+#         type_user = data.iloc[0]['type']
+#         name_user = data.iloc[0]['name']
+#         email_user = data.iloc[0]['email']
 
-        js_type_user = st_javascript(
-            f"localStorage.setItem('userType', '{type_user}');")
+#         # Salvar Variáveis no Armazenamento Local via JavaScript
+#         js_id_user = st_javascript(
+#             f"localStorage.setItem('userId', '{id_user}');")
 
-        js_name_user = st_javascript(
-            f"localStorage.setItem('userName', '{name_user}');")
+#         js_type_user = st_javascript(
+#             f"localStorage.setItem('userType', '{type_user}');")
 
-        js_email_user = st_javascript(
-            f"localStorage.setItem('userLogin', '{email_user}');")
+#         js_name_user = st_javascript(
+#             f"localStorage.setItem('userName', '{name_user}');")
 
-        time.sleep(1)
+#         js_email_user = st_javascript(
+#             f"localStorage.setItem('userLogin', '{email_user}');")
 
-        if type_user == 'Admin':
-            switch_page("admin_users")
-        else:
-            switch_page("alphai_chat")
+#         time.sleep(1)
 
-    # Senão exibir erro
-    else:
-        st.error(
-            'Login ou Senha inválido. Tente novamente ou recupere a sua senha.')
+#         if type_user == 'Admin':
+#             switch_page("admin_users")
+#         else:
+#             switch_page("alphai_chat")
+
+#     # Senão exibir erro
+#     else:
+#         st.error(
+#             'Login ou Senha inválido. Tente novamente ou recupere a sua senha.')
 
 
-# Botão para página de cadastro
-btn_cadastro = st.button(label='Ainda não possui cadastro? Cadastre-se')
-if btn_cadastro:
-    switch_page("cadastro")
+# # Botão para página de cadastro
+# btn_cadastro = st.button(label='Ainda não possui cadastro? Cadastre-se')
+# if btn_cadastro:
+#     switch_page("cadastro")
 
 # names = ['Eduardo Bonfim', 'Administrator']
 # usernames = ['ebbonfim', 'adminluciana']

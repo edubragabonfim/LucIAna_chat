@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import pandas.io.sql as sqlio
@@ -6,13 +5,6 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 load_dotenv()
-
-st.set_page_config(
-    'Admin LucIAna',
-    '🦅',
-    layout='wide',
-    initial_sidebar_state='collapsed'
-)
 
 conn = psycopg2.connect(
     user=os.getenv('PG_USER'),
