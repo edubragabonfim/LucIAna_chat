@@ -12,11 +12,19 @@ import streamlit_authenticator as stauth
 from streamlit_extras.switch_page_button import switch_page
 from streamlit_javascript import st_javascript
 from dotenv import load_dotenv
+
 load_dotenv()
 
-nav = get_nav_from_toml(".streamlit/pages.toml")
+# nav = get_nav_from_toml(".streamlit/pages.toml")
 
-pg = st.navigation(nav)
+pg = st.navigation(
+    [
+        st.Page("views/main.py"),
+        st.Page("views/settings.py"),
+        st.Page("views/messages.py"),
+        st.Page("views/models.py"),
+    ]
+)
 
 pg.run()
 
