@@ -7,7 +7,7 @@ import time
 import psycopg2
 import pandas as pd
 import streamlit as st
-from st_pages import add_page_title, get_nav_from_toml
+# from st_pages import add_page_title, get_nav_from_toml
 import streamlit_authenticator as stauth
 from streamlit_extras.switch_page_button import switch_page
 from streamlit_javascript import st_javascript
