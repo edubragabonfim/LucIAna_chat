@@ -1,0 +1,9 @@
+pandas==2.1.2
+streamlit==1.38.0
+python-dotenv==1.0.1
+psycopg2-binary==2.9.9
+streamlit-auth0-component==0.1.5
+streamlit-authenticator==0.3.3
+st_pages==0.4.5
+streamlit_extras==0.4.7
+streamlit_javascript==0.1.5
