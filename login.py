@@ -46,14 +46,14 @@ def main():
         st.warning('The key is empty')
 
         pg = st.navigation([
-            st.Page(page_error, title='🔴 Error')
+            st.Page(page_error, title='🏠 Main')
         ])
         pg.run()
     else:
         st.error('Invalid key')
 
         pg = st.navigation([
-            st.Page(page_error, title='🔴 Error')
+            st.Page(page_error, title='🏠 Main')
         ])
         pg.run()
 
