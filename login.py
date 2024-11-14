@@ -22,7 +22,7 @@ load_dotenv()
 
 # nav = get_nav_from_toml(".streamlit/pages.toml")
 
-_key = st.text_input('Enter your key...')
+_key = st.text_input('Enter your key...', type='password')
 
 if _key == os.getenv('KEY'):
     pg = st.navigation(

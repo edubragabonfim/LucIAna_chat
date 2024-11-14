@@ -9,5 +9,6 @@ def page_main():
     st.sidebar.write(f"Chat with LucIAna in [WhatsApp]({link})")
     st.sidebar.json(st.session_state, expanded=False)
     st.header('LucIAna Portal 🧠', divider='blue')
-    st.image('https://drive.google.com/file/d/1cXhnzARrCVFpsDjSp7-qWQ4odTPNalln/view')
+    # st.image('https://drive.google.com/file/d/1cXhnzARrCVFpsDjSp7-qWQ4odTPNalln/view')
+    st.image('static/LucIAna.jpg')
 
