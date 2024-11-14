@@ -4,3 +4,4 @@ desktop.ini
 .env
 generate_keys.py
 .venv
+draft.py

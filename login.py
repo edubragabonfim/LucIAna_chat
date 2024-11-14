@@ -17,16 +17,22 @@ load_dotenv()
 
 # nav = get_nav_from_toml(".streamlit/pages.toml")
 
-pg = st.navigation(
-    [
-        st.Page("views/main.py"),
-        st.Page("views/settings.py"),
-        st.Page("views/messages.py"),
-        st.Page("views/models.py"),
-    ]
-)
+_key = st.text_input('Enter your key...')
 
-pg.run()
+if _key == os.getenv('KEY'):
+    pg = st.navigation(
+        [
+            st.Page("views/main.py"),
+            st.Page("views/settings.py"),
+            st.Page("views/messages.py"),
+            st.Page("views/models.py"),
+        ]
+    )
+    pg.run()
+else:
+    st.error('Invalid key')
+
+
 
 # ## ---- USER  AUTHENTICATION ----
 # h = hashlib.new("SHA256")
