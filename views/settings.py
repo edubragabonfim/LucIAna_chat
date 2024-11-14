@@ -5,7 +5,6 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 
-
 def page_settings():
 
     load_dotenv()

@@ -19,6 +19,10 @@ from views.messages import page_messages
 from views.main import page_main
 from views.error import page_error
 
+st.set_page_config(
+    page_title='LucIAna',
+    page_icon='static/LucIAna.jpg'
+)
 
 def main():
     load_dotenv()
