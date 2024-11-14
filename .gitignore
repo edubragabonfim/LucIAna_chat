@@ -6,3 +6,4 @@ generate_keys.py
 .venv
 draft.py
 app.py
+**/__pycache__/

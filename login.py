@@ -17,26 +17,48 @@ from views.settings import page_settings
 from views.models import page_models
 from views.messages import page_messages
 from views.main import page_main
+from views.error import page_error
 
-load_dotenv()
 
-# nav = get_nav_from_toml(".streamlit/pages.toml")
+def main():
+    load_dotenv()
 
-_key = st.text_input('Enter your key...', type='password')
+    # nav = get_nav_from_toml(".streamlit/pages.toml")
 
-if _key == os.getenv('KEY'):
-    pg = st.navigation(
-        [
-            # st.Page("views/main.py"),
-            st.Page(page_main, title='🏠 Main'),
-            # st.Page("views/settings.py"),
-            st.Page(page_settings, title='⚙️ Settings'),
-            # st.Page("views/messages.py"),
-            st.Page(page_messages, title='💬 Messages'),
-            # st.Page("views/models.py"),
-            st.Page(page_models, title='🤖 Models')
-        ]
-    )
-    pg.run()
-else:
-    st.error('Invalid key')
+    _key = st.text_input('Enter your key...', type='password')
+    st.divider()
+
+    if _key == os.getenv('KEY'):
+        pg = st.navigation(
+            [
+                # st.Page("views/main.py"),
+                st.Page(page_main, title='🏠 Main'),
+                # st.Page("views/settings.py"),
+                st.Page(page_settings, title='⚙️ Settings'),
+                # st.Page("views/messages.py"),
+                st.Page(page_messages, title='💬 Messages'),
+                # st.Page("views/models.py"),
+                st.Page(page_models, title='🤖 Models')
+            ]
+        )
+        pg.run()
+    elif _key == '':
+        st.warning('The key is empty')
+
+        pg = st.navigation([
+            st.Page(page_error, title='🔴 Error')
+        ])
+        pg.run()
+    else:
+        st.error('Invalid key')
+
+        pg = st.navigation([
+            st.Page(page_error, title='🔴 Error')
+        ])
+        pg.run()
+
+        
+
+
+if __name__ == '__main__':
+    main()
