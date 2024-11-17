@@ -18,6 +18,8 @@ from views.models import page_models
 from views.messages import page_messages
 from views.main import page_main
 from views.error import page_error
+from views.dashboard import page_dashboard
+from views.chat import page_chat
 
 st.set_page_config(
     page_title='LucIAna',
@@ -35,14 +37,12 @@ def main():
     if _key == os.getenv('KEY'):
         pg = st.navigation(
             [
-                # st.Page("views/main.py"),
                 st.Page(page_main, title='🏠 Main'),
-                # st.Page("views/settings.py"),
                 st.Page(page_settings, title='⚙️ Settings'),
-                # st.Page("views/messages.py"),
                 st.Page(page_messages, title='💬 Messages'),
-                # st.Page("views/models.py"),
-                st.Page(page_models, title='🤖 Models')
+                st.Page(page_models, title='🤖 Models'),
+                st.Page(page_dashboard, title='📊 Dashboard'),
+                st.Page(page_chat, title='🧠 Chat')
             ]
         )
         pg.run()
