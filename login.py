@@ -37,12 +37,12 @@ def main():
     if _key == os.getenv('KEY'):
         pg = st.navigation(
             [
-                st.Page(page_main, title='🏠 Main'),
-                st.Page(page_settings, title='⚙️ Settings'),
-                st.Page(page_messages, title='💬 Messages'),
-                st.Page(page_models, title='🤖 Models'),
-                st.Page(page_dashboard, title='📊 Dashboard'),
-                st.Page(page_chat, title='🧠 Chat')
+                st.Page(page_main, title='Main', icon=':material/home:'),
+                st.Page(page_settings, title='Settings', icon=':material/settings:'),
+                st.Page(page_messages, title='Messages', icon=':material/mail:'),
+                st.Page(page_models, title='Models', icon=':material/psychology:'),
+                st.Page(page_dashboard, title='Dashboard', icon=':material/monitoring:'),
+                st.Page(page_chat, title='Chat', icon=':material/chat:')
             ]
         )
         pg.run()

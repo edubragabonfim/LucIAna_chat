@@ -8,3 +8,5 @@ st_pages==0.4.5
 streamlit_extras==0.4.7
 streamlit_javascript==0.1.5
 openai==1.54.4
+langchain==0.3.7
+langchain_community==0.3.7
