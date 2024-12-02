@@ -27,7 +27,7 @@ st.set_page_config(
 )
 
 def main():
-    load_dotenv()
+    load_dotenv() 
 
     # nav = get_nav_from_toml(".streamlit/pages.toml")
 
