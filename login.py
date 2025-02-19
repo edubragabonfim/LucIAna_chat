@@ -23,12 +23,14 @@ from views.chat import page_chat
 
 st.set_page_config(
     page_title='LucIAna',
-    page_icon='static/LucIAna.jpg'
+    page_icon='static/LucIAna.jpg',
+    layout='wide',
+    initial_sidebar_state='collapsed'
 )
 
 def main():
     load_dotenv() 
-    
+
     _key = st.text_input('Enter your key...', type='password') 
     st.divider()
 
