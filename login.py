@@ -28,21 +28,19 @@ st.set_page_config(
 
 def main():
     load_dotenv() 
-
-    # nav = get_nav_from_toml(".streamlit/pages.toml")
-
+    
     _key = st.text_input('Enter your key...', type='password') 
     st.divider()
 
     if _key == os.getenv('KEY'):
         pg = st.navigation(
             [
-                st.Page(page_main, title='Main', icon=':material/home:'),
-                st.Page(page_settings, title='Settings', icon=':material/settings:'),
-                st.Page(page_messages, title='Messages', icon=':material/mail:'),
-                st.Page(page_models, title='Models', icon=':material/psychology:'),
-                st.Page(page_dashboard, title='Dashboard', icon=':material/monitoring:'),
-                st.Page(page_chat, title='Chat', icon=':material/chat:')
+                st.Page(page_main, title='Main', icon=':material/home:', url_path='home'),
+                st.Page(page_settings, title='Settings', icon=':material/settings:', url_path='settings'),
+                st.Page(page_messages, title='Messages', icon=':material/mail:', url_path='messages'),
+                st.Page(page_models, title='Models', icon=':material/psychology:', url_path='models'),
+                # st.Page(page_dashboard, title='Dashboard', icon=':material/monitoring:', url_path='dashboard'),
+                st.Page(page_chat, title='Chat', icon=':material/chat:', url_path='chat')
             ]
         )
         pg.run()
